@@ -11,6 +11,10 @@ def login():
 def register():
     return render_template('register.html', title='Register')
 
+@app.route('/account', methods=['GET', 'POST'])
+def account():
+    return render_template('account.html', title='Account')
+
 @app.route('/adduser', methods = ['POST', 'GET'])
 def adduser():
     if (request.method == 'POST'): 
@@ -22,11 +26,12 @@ def adduser():
         if (user_db.get_row("users", "Username", username) == None):
             user_db.insert_row("users", username, password)
             message = "Account Created!"
+            user_db.close_db()
+            return render_template("account.html", title='Account', message=message)
         else:
-            message = "Account Creation Failed!"
-        
-        user_db.close_db()
-        return render_template("result.html", title='Result', message=message)
+            message = "Account Creation Failed! That username already exists!"
+            user_db.close_db()
+            return render_template('register.html', title='Register', message=message)
 
 @app.route('/loginuser', methods = ['POST', 'GET'])
 def loginuser():
@@ -39,8 +44,9 @@ def loginuser():
         try:
             if (user_db.get_row("users", "Username", username)["Username"] == username and user_db.get_row("users", "Password", password)["Password"] == password):
                 message = "Welcome " + username
+                user_db.close_db()
+                return render_template("account.html", title='Account', message=message)
         except:
             message = "User Login Failed! Either the username or password is incorrect!"
-        finally:
             user_db.close_db()
-            return render_template("result.html", title='Result', message=message)
+            return render_template('login.html', title='Login', message=message)

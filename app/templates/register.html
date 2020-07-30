@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {{ message }}
     <h1>Register</h1>
     <form action="{{ url_for('adduser') }}" method="POST">
         <label for="username">Username</label>
@@ -9,4 +10,5 @@
         <input type="text" id="password" name="password"/></br>
         <input type="submit" value="Submit"/>
     </form>
+    {{ message }}
 {% endblock %}
