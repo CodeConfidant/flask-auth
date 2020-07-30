@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>Flask-Auth | {{ title }}</title>
+    </head>
+    <body>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        </nav>
+        {% block content %}{% endblock %}
+    </body>
+</html>

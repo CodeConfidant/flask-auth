@@ -1,0 +1,18 @@
+--------
+Packages
+--------
+Install Virtual Environment: pip install virtualenv
+Remember Environment Variables Across Terminal Sessions: pip install python-dotenv
+Install Flask: pip install flask
+
+--------
+Commands
+--------
+Create Virtual Environment: virtualenv [Environment Name]
+Activate Virtual Environment (Linux): source [Environment Name]/bin/activate
+Deactivate Virtual Environment (Linux): source [Environment Name]/bin/deactivate
+Activate Virtual Environment (Windows): [Environment Name]\Scripts\activate
+Deactivate Virtual Environment (Windows): [Environment Name]\Scripts\activate
+Set Flask Environment Variable (Linux): export FLASK_APP=[Top Level Python Script]
+Set Flask Environment Variable (Windows): set FLASK_APP=[Top Level Python Script]
+Run Flask: flask run
