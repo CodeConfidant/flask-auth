@@ -3,10 +3,6 @@ from flask import render_template, url_for, request
 from app import app
 
 @app.route('/')
-@app.route('/index')
-def index():
-    return render_template('index.html', title='Home')
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     return render_template('login.html', title='Login')
@@ -31,3 +27,20 @@ def adduser():
         
         user_db.close_db()
         return render_template("result.html", title='Result', message=message)
+
+@app.route('/loginuser', methods = ['POST', 'GET'])
+def loginuser():
+    if (request.method == 'POST'): 
+        username = request.form['username']
+        password = request.form['password']
+        user_db = db("app/users.db")
+        message = ""
+
+        try:
+            if (user_db.get_row("users", "Username", username)["Username"] == username and user_db.get_row("users", "Password", password)["Password"] == password):
+                message = "Welcome " + username
+        except:
+            message = "User Login Failed! Either the username or password is incorrect!"
+        finally:
+            user_db.close_db()
+            return render_template("result.html", title='Result', message=message)
