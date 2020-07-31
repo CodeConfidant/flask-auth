@@ -28,7 +28,7 @@ def adduser():
             user_db.insert_row("users", email, username, password)
             message = "Account Created! Welcome " + username
             user_db.close_db()
-            return render_template("account.html", title='Account', message=message)
+            return render_template("account.html", title='Account', message=message, email=email, username=username, password=password)
         else:
             message = "Account Creation Failed! That username or email already exists!"
             user_db.close_db()
@@ -47,7 +47,7 @@ def loginuser():
             if (row["Username"] == username and row["Password"] == password):
                 message = "Welcome " + username
                 user_db.close_db()
-                return render_template("account.html", title='Account', message=message)
+                return render_template("account.html", title='Account', message=message, email=row["Email"], username=username, password=password)
             else:
                 message = "User Login Failed! Either the username or password is incorrect!"
                 user_db.close_db()
