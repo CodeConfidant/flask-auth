@@ -56,3 +56,13 @@ def loginuser():
             message = "User Login Failed! Either the username or password is incorrect!"
             user_db.close_db()
             return render_template("login.html", title='Login', message=message)
+
+@app.route('/deluser')
+def deluser(): 
+        username = request.args.get('id')
+        user_db = db("app/users.db")
+        message = "Account Deleted!"
+        user_db.drop_row("users", "Username", username)
+        return render_template("login.html", title='Login', message=message)
+
+

@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {{ message }}
+    <p>{{ message }}</p>
 
-<ul>
-    <li>Email: {{ email }}</li>
-    <li>Username: {{ username }}</li>
-    <li>Password: {{ password }}</li>
-</ul>
+    <h1>Account Info</h1>
+    <p>{{ username }}</p>
+    <p>{{ email }}</p>
+    <p>{{ password }}</p>
+
+    <a href="/deluser?id={{ username }}">Delete</a>
 
 {% endblock %}
