@@ -1,9 +1,21 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>Flask-Auth | {{ title }}</title>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="default-style" content="flask-auth Styles"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="application-name" content="flask-auth"/>
+        <meta name="author" content="Drew Hainer"/>
+        <meta name="description" content="A simple boilerplate using flask and SQLite"/>
+        <meta name="keywords" content="flask-auth, flask, auth, authentication, boilerplate, codeconfidant, code, confidant"/>
+        <link title="flask-auth Styles" rel="stylesheet" type="text/css" href="styles/flask-auth.css"/>
+        <link rel="shortcut icon" type="image/x-icon" href=""/>
     </head>
     <body>
         <nav>
+            <a href="{{ url_for('index') }}">Home</a>
             <a href="{{ url_for('login') }}">Login</a>
             <a href="{{ url_for('register') }}">Register</a>
         </nav>
