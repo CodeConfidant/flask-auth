@@ -4,9 +4,20 @@
     <p>{{ message }}</p>
 
     <h1>Account Info</h1>
-    <p>{{ username }}</p>
-    <p>{{ email }}</p>
-    <p>{{ password }}</p>
+    <p>Username: {{ username }}</p>
+    <p>Email: {{ email }}</p>
+    <p>Password: {{ password }}</p>
+
+    <h1>Change Password</h1>
+    <form action="{{ url_for('changepassword') }}" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username"/></br>
+        <label for="password">Old Password</label>
+        <input type="text" id="password" name="password"/></br>
+        <label for="password">New Password</label>
+        <input type="text" id="new_password" name="new_password"/></br>
+        <input type="submit" value="Submit"/>
+    </form>
 
     <a href="/deluser?id={{ username }}">Delete</a>
 

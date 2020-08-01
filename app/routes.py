@@ -63,6 +63,31 @@ def deluser():
         user_db = db("app/users.db")
         message = "Account Deleted!"
         user_db.drop_row("users", "Username", username)
+        user_db.close_db()
         return render_template("login.html", title='Login', message=message)
+
+@app.route('/changepassword', methods = ['POST', 'GET'])
+def changepassword():
+    if (request.method == 'POST'):
+        username = request.form['username']
+        password = request.form['password']
+        new_password = request.form['new_password']
+        user_db = db("app/users.db")
+        message = ""
+        row = user_db.get_row("users", "Username", username)
+
+        if(row != None and row["Username"] == username and row["Password"] == password):
+            user_db.update_row("users", "Password", new_password, "Username", username)
+            row = user_db.get_row("users", "Username", username)
+            user_db.close_db()
+            message = "Password changed successfully!"
+            return render_template("account.html", title='Account', message=message, email=row["Email"], username=row["Username"], password=row["Password"])
+        else:
+            user_db.close_db()
+            message = "Password change failed! Either the username or password was incorrect!"
+            return render_template("login.html", title='Login', message=message)
+
+
+
 
 
