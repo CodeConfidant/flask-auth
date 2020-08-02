@@ -9,13 +9,13 @@
     <p>Password: {{ password }}</p>
 
     <h1>Change Password</h1>
-    <form action="{{ url_for('changepassword') }}" method="POST">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username"/></br>
-        <label for="password">Old Password</label>
-        <input type="text" id="password" name="password"/></br>
-        <label for="password">New Password</label>
-        <input type="text" id="new_password" name="new_password"/></br>
+    <form action="{{ url_for('changepassword') }}" method="POST" accept-charset="UTF-8" autocomplete="off" autofocus="off" enctype="multipart/form-data">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" minlength="8" maxlength="30" required/></br>
+        <label for="password">Old Password:</label>
+        <input type="password" id="password" name="password" minlength="8" maxlength="30" required/></br>
+        <label for="password">New Password:</label>
+        <input type="password" id="new_password" name="new_password" minlength="8" maxlength="30" required/></br>
         <input type="submit" value="Submit"/>
     </form>
 
