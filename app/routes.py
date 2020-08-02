@@ -90,8 +90,3 @@ def changepassword():
             user_db.close_db()
             message = "Password change failed! Either the username or password was incorrect!"
             return render_template("login.html", title='Login', message=message)
-
-
-
-
-
