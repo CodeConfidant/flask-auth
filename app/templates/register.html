@@ -3,6 +3,7 @@
 {% block content %}
     <div class="box">
         <h1>Register</h1>
+        <p>{{ message }}</p>
         <form action="{{ url_for('adduser') }}" method="POST" accept-charset="UTF-8" autocomplete="off" autofocus="off" enctype="multipart/form-data">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" maxlength="30" required/></br>
@@ -12,6 +13,5 @@
             <input type="password" id="password" name="password" minlength="8" maxlength="30" required/></br>
             <input type="submit" value="Submit"/>
         </form>
-        <p>{{ message }}</p>
     </div>
 {% endblock %}
