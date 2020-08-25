@@ -2,7 +2,7 @@ from connectwrap import db
 from flask import render_template, url_for, request
 from app import app
 
-user_db = db("app/users.db"); user_db.close_db()
+user_db = db("app/users.db", "Users"); user_db.close_db()
 
 @app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
@@ -29,8 +29,8 @@ def adduser():
         password = request.form['password']
         user_db.open_db()
 
-        if (user_db.get_row("users", "Email", email) == None and user_db.get_row("users", "Username", username) == None):
-            user_db.insert_row("users", email, username, password)
+        if (user_db.get_row("Email", email) == None and user_db.get_row("Username", username) == None):
+            user_db.insert_row(email, username, password)
             user_db.close_db()
             return render_template("account.html", title='Account', message=str("Account Created! Welcome {0}!").format(username), email=email, username=username, password=password)
         else:
@@ -43,7 +43,7 @@ def loginuser():
         username = request.form['username']
         password = request.form['password']
         user_db.open_db()
-        row = user_db.get_row("users", "Username", username)
+        row = user_db.get_row("Username", username)
 
         try:
             if (row["Username"] == username and row["Password"] == password):
@@ -60,7 +60,7 @@ def loginuser():
 def deluser(): 
         username = request.args.get('id')
         user_db.open_db()
-        user_db.drop_row("users", "Username", username)
+        user_db.drop_row("Username", username)
         user_db.close_db()
         return render_template("index.html", title='Home', message=str("User {0} successfully deleted!").format(username))
 
@@ -71,11 +71,11 @@ def changepassword():
         password = request.form['password']
         new_password = request.form['new_password']
         user_db.open_db()
-        row = user_db.get_row("users", "Username", username)
+        row = user_db.get_row("Username", username)
 
         if (row != None and row["Username"] == username and row["Password"] == password):
-            user_db.update_row("users", "Password", new_password, "Username", username)
-            row = user_db.get_row("users", "Username", username)
+            user_db.update_row("Password", new_password, "Username", username)
+            row = user_db.get_row("Username", username)
             user_db.close_db()
             return render_template("account.html", title='Account', message="Password changed successfully!", email=row["Email"], username=row["Username"], password=row["Password"])
         else:
