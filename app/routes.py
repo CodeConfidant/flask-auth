@@ -1,3 +1,4 @@
+from passlib.hash import sha512_crypt
 from connectwrap import db
 from flask import render_template, url_for, request
 from app import app
@@ -30,9 +31,9 @@ def adduser():
         user_db.open_db()
 
         if (user_db.get_row("Email", email) == None and user_db.get_row("Username", username) == None):
-            user_db.insert_row(email, username, password)
+            user_db.insert_row(email, username, sha512_crypt.hash(password))
             user_db.close_db()
-            return render_template("account.html", title='Account', message=str("Account Created! Welcome {0}!").format(username), email=email, username=username, password=password)
+            return render_template("account.html", title='Account', message=str("Account Created! Welcome {0}!").format(username), email=email, username=username)
         else:
             user_db.close_db()
             return render_template('register.html', title='Register', message="Account Creation Failed! That username or email already exists!")
@@ -46,9 +47,9 @@ def loginuser():
         row = user_db.get_row("Username", username)
 
         try:
-            if (row["Username"] == username and row["Password"] == password):
+            if (row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True):
                 user_db.close_db()
-                return render_template("account.html", title='Account', message=str("Welcome {0}!").format(username), email=row["Email"], username=row["Username"], password=row["Password"])
+                return render_template("account.html", title='Account', message=str("Welcome {0}!").format(username), email=row["Email"], username=row["Username"])
             else:
                 user_db.close_db()
                 return render_template("login.html", title='Login', message="User Login Failed! Either the username or password is incorrect!")
@@ -73,11 +74,11 @@ def changepassword():
         user_db.open_db()
         row = user_db.get_row("Username", username)
 
-        if (row != None and row["Username"] == username and row["Password"] == password):
-            user_db.update_row("Password", new_password, "Username", username)
+        if (row != None and row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True):
+            user_db.update_row("Password", sha512_crypt.hash(new_password), "Username", username)
             row = user_db.get_row("Username", username)
             user_db.close_db()
-            return render_template("account.html", title='Account', message="Password changed successfully!", email=row["Email"], username=row["Username"], password=row["Password"])
+            return render_template("account.html", title='Account', message="Password changed successfully!", email=row["Email"], username=row["Username"])
         else:
             user_db.close_db()
             return render_template("login.html", title='Login', message="Password change failed! Either the username or password was incorrect!")
