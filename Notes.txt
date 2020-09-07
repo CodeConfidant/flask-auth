@@ -5,6 +5,7 @@ Install Virtual Environment: pip install virtualenv
 Remember Environment Variables Across Terminal Sessions: pip install python-dotenv
 Install Flask: pip install flask
 Install Connectwrap: pip install connectwrap
+Install Passlib: pip install passlib
 --------
 Commands
 --------

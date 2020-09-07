@@ -76,7 +76,6 @@ def changepassword():
 
         if (row != None and row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True):
             user_db.update_row("Password", sha512_crypt.hash(new_password), "Username", username)
-            row = user_db.get_row("Username", username)
             user_db.close_db()
             return render_template("account.html", title='Account', message="Password changed successfully!", email=row["Email"], username=row["Username"])
         else:
