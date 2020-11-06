@@ -29,7 +29,7 @@
 ## Final Project Preparation
 
     With the virtual environment activated run the following command:
-    pip install python-dotenv connectwrap flask passlib
+    pip install -r requirements.txt
 
     After that all you need to do is use the following command:
     flask run
