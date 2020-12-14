@@ -6,17 +6,27 @@
         <h1>Account Info</h1>
         <p>Username: {{ username }}</p>
         <p>Email: {{ email }}</p>
-        <a href="/deluser?id={{ username }}">Delete Account</a>
+        <p>Type: {{ type }}</p>
+
+        <h2>Change Username</h2>
+        <form action="{{ url_for('changeusername') }}" method="POST" accept-charset="UTF-8" autocomplete="off" autofocus="off" enctype="multipart/form-data">
+            <input type="hidden" id="username" name="username" value="{{ username }}" minlength="8" maxlength="30" required/></br>
+            <label for="password">New Username</label>
+            <input type="text" id="new_username" name="new_username" minlength="8" maxlength="30" required/></br>
+            <input type="submit" value="Submit"/>
+        </form>
   
         <h2>Change Password</h2>
         <form action="{{ url_for('changepassword') }}" method="POST" accept-charset="UTF-8" autocomplete="off" autofocus="off" enctype="multipart/form-data">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" minlength="8" maxlength="30" required/></br>
+            <input type="hidden" id="username" name="username" value="{{ username }}" minlength="8" maxlength="30" required/></br>
             <label for="password">Current Password</label>
             <input type="password" id="password" name="password" minlength="8" maxlength="30" required/></br>
             <label for="password">New Password</label>
             <input type="password" id="new_password" name="new_password" minlength="8" maxlength="30" required/></br>
             <input type="submit" value="Submit"/>
         </form>
+
+        <a href="/deluser?id={{ username }}">Delete Account</a>
     </div>
+
 {% endblock %}
