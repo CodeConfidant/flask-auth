@@ -20,10 +20,14 @@
                 <a href="{{ url_for('login') }}">Login</a>
                 <a href="{{ url_for('register') }}">Register</a>
             </nav>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </header>
         {% block content %}{% endblock %}
-        <footer>
-            <h3 class="copy-heading">&copy; 2020 Drew Hainer</h2>
-        </footer>
     </body>
 </html>

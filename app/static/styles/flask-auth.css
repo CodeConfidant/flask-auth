@@ -9,7 +9,7 @@ body {
     background-color: #14A76C;
 }
 
-header, footer {
+header {
     padding: 1%;
     margin: auto;
     display: block;
@@ -61,12 +61,6 @@ input:hover {
     color: dodgerblue;
 }
 
-.copy-heading {
-    font-style: italic;
-    font-weight: lighter;
-    font-size: 1rem;
-}
-
 .box {
     opacity: 70%;
     padding: 1%;
@@ -85,7 +79,4 @@ input:hover {
 
 .title {
     font-size: 3rem;
-}
-
-@media only screen and (max-width: 860px) {
 }

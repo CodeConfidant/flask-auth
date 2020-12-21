@@ -1,6 +1,6 @@
 from passlib.hash import sha512_crypt
 from connectwrap import db
-from flask import render_template, url_for, request, redirect
+from flask import render_template, url_for, request, redirect, flash
 from app import app
 from app.forms import LoginForm, RegisterForm
 
@@ -31,13 +31,20 @@ def register_user():
         password = request.form['password']
         user_db.open_db()
 
-        if (user_db.get_row("Email", email) == None and user_db.get_row("Username", username) == None):
-            user_db.insert_row(email, username, sha512_crypt.hash(password), "Standard")
+        try:
+            if (user_db.get_row("Email", email) == None and user_db.get_row("Username", username) == None):
+                user_db.insert_row(email, username, sha512_crypt.hash(password), "Standard")
+                user_db.close_db()
+                flash(str("Account Created! Welcome {0}!").format(username))
+                return render_template("account.html", title='Account', email=email, username=username, type="Standard")
+            else:
+                user_db.close_db()
+                flash("Account registration failed! An account with that Email and/or Username already exists!")
+                return redirect(url_for('register'))
+        except:
             user_db.close_db()
-            return render_template("account.html", title='Account', message=str("Account Created! Welcome {0}!").format(username), email=email, username=username, type="Standard")
-        else:
-            user_db.close_db()
-            return render_template('register.html', title='Register', message="Account Creation Failed! That username or email already exists!")
+            flash("Account registration failed! An account with that Email and/or Username already exists!")
+            return redirect(url_for('register'))
 
 @app.route('/login_user', methods=['GET', 'POST'])
 def login_user():
@@ -50,13 +57,17 @@ def login_user():
         try:
             if (row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True):
                 user_db.close_db()
-                return render_template("account.html", title='Account', message=str("Welcome {0}!").format(username), email=row["Email"], username=row["Username"], type=row["Type"])
+                flash(str("Welcome {0}!").format(username))
+                return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
             else:
                 user_db.close_db()
-                return render_template("login.html", title='Login', message="User Login Failed! Either the username or password is incorrect!")
+                flash("Login failed! Either the Username or Password was incorrect!")
+                return redirect(url_for('login'))
         except:
             user_db.close_db()
-            return render_template("login.html", title='Login', message="User Login Failed! Either the username or password is incorrect!")
+            flash("Login failed! Either the Username or Password was incorrect!")
+            return redirect(url_for('login'))
+            
 
 @app.route('/del_user', methods=['GET', 'POST'])
 def del_user(): 
@@ -66,8 +77,10 @@ def del_user():
         row = user_db.get_row("Username", username)
         if (row["Type"] == "Admin"):
             user_db.close_db()
-            return render_template("account.html", title='Account', message=str("Error! Can't delete an Admin account!"), email=row["Email"], username=row["Username"], type=row["Type"])
+            flash("Error! Can't delete an Admin account!")
+            return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
         else:
             user_db.drop_row("Username", username)
             user_db.close_db()
-            return render_template("index.html", title='Home', message=str("User {0} successfully deleted!").format(username))
+            flash(str("User {0} successfully deleted!").format(username))
+            return render_template("index.html", title='Home')
