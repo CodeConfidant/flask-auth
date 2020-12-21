@@ -7,6 +7,9 @@
         <p>Username: {{ username }}</p>
         <p>Email: {{ email }}</p>
         <p>Type: {{ type }}</p>
-        <a href="/del_user?id={{ username }}">Delete Account</a>
+        <form action="{{ url_for('del_user') }}" method="POST">
+            <input type="hidden" id="username" name="username" value="{{ username }}">
+            <input type="submit" value="Delete Account">
+        </form>
     </div>
 {% endblock %}

@@ -58,9 +58,10 @@ def login_user():
             user_db.close_db()
             return render_template("login.html", title='Login', message="User Login Failed! Either the username or password is incorrect!")
 
-@app.route('/del_user')
+@app.route('/del_user', methods=['GET', 'POST'])
 def del_user(): 
-        username = request.args.get('id')
+    if (request.method == 'POST'):
+        username = request.form['username']
         user_db.open_db()
         row = user_db.get_row("Username", username)
         if (row["Type"] == "Admin"):
@@ -69,5 +70,4 @@ def del_user():
         else:
             user_db.drop_row("Username", username)
             user_db.close_db()
-        
             return render_template("index.html", title='Home', message=str("User {0} successfully deleted!").format(username))
