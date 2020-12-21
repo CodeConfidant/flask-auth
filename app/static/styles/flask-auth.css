@@ -43,7 +43,6 @@ a {
 }
 
 input {
-    width: 25%;
     display: block;
     background-color: whitesmoke;
     padding: 1rem;
@@ -89,7 +88,4 @@ input:hover {
 }
 
 @media only screen and (max-width: 860px) {
-    input {
-        width: 50%;
-    }
 }

@@ -4,12 +4,11 @@
     <div class="box">
         <h1>Login</h1>
         <p>{{ message }}</p>
-        <form action="{{ url_for('loginuser') }}" method="POST" accept-charset="UTF-8" autocomplete="off" autofocus="off" enctype="multipart/form-data">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" minlength="8" maxlength="30" required/></br>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" minlength="8" maxlength="30" required/></br>
-            <input type="submit" value="Submit"/>
+        
+        <form action="{{ url_for('login_user') }}" method="POST">
+            <p> {{ form.username.label }} <br> {{ form.username(size=32, autocomplete="off", autofocus="off") }}</p>
+            <p> {{ form.password.label }} <br> {{ form.password(size=32, autocomplete="off", autofocus="off") }}</p>
+            <p> {{ form.submit() }} </p>
         </form>
     </div>
 {% endblock %}
