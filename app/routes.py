@@ -19,10 +19,6 @@ def login():
 def register():
     return render_template('register.html', title='Register', form=RegisterForm())
 
-@app.route('/account', methods=['GET', 'POST'])
-def account():
-    return render_template('account.html', title='Account')
-
 @app.route('/register_user', methods=['GET', 'POST'])
 def register_user():
     if (request.method == 'POST'):
