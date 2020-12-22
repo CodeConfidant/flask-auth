@@ -16,18 +16,12 @@ header {
     text-align: center;
 }
 
-h1, h2, h3, p, label {
+h1, h2, h3, p, label, li {
     color: whitesmoke;
 }
 
-form {
-    width: 100%;
-    height: auto;
-    padding: 1%;
-    margin: 0%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+ol {
+    list-style-type: none;
 }
 
 a {
@@ -53,28 +47,26 @@ input {
     font-size: 1rem;
 }
 
-a:hover {
+a:hover, input:hover {
     color: dodgerblue;
 }
 
-input:hover {
-    color: dodgerblue;
+form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .box {
     opacity: 70%;
     padding: 1%;
     height: auto;
-    margin: 0%;
-    display: inline-block;
-    text-align: center;
-    border-top: transparent;
-    border-left: transparent;
-    border-right: transparent;
-    border-bottom: transparent;
-    border-radius: 15px;
-    border-width: thin;
+    margin: auto;
+    display: block;
     width: 100%;
+    border: transparent;
+    text-align: center;
 }
 
 .title {

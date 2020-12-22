@@ -3,24 +3,25 @@
 {% block content %}
     <div class="box">
         <h1>Account Info</h1>
-        <p>Username: {{ username }}</p>
-        <p>Email: {{ email }}</p>
-        <p>Type: {{ type }}</p>
+        <ol>
+            <li><strong>Username: </strong>{{ username }}</li>
+            <li><strong>Email: </strong>{{ email }}</li>
+            <li><strong>Type: </strong>{{ type }}</li>
+        </ol>
         <form action="{{ url_for('del_user') }}" method="POST">
             <input type="hidden" id="username" name="username" value="{{ username }}">
             <input type="submit" value="Delete Account">
         </form>
-
-        <h2>Change Username</h2>
+   
         <form action="{{ url_for('change_username') }}" method="POST" accept-charset="UTF-8" autocomplete="off" autofocus="off" enctype="multipart/form-data">
+            <h2>Change Username</h2><br/>
             <input type="hidden" id="username" name="username" value="{{ username }}" required/></br>
             <label for="new_username">New Username</label>
             <input type="text" id="new_username" name="new_username" size="32" minlength="8" maxlength="32" required/></br>
             <input type="submit" value="Submit"/>
         </form>
-
-        <h2>Change Password</h2>
         <form action="{{ url_for('change_password') }}" method="POST" accept-charset="UTF-8" autocomplete="off" autofocus="off" enctype="multipart/form-data">
+            <h2>Change Password</h2><br/>
             <input type="hidden" id="username" name="username" value="{{ username }}" required/></br>
             <label for="password">Password</label>
             <input type="password" id="password" name="password" size="32" minlength="8" maxlength="32" required/></br>
