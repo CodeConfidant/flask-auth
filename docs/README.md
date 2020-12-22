@@ -36,8 +36,6 @@
 
     This spins up your application on localhost:5000 by default.
 
-[Notes](Notes.txt) for a list of commands used in this tutorial.
-
 ## Credits
 
 I want to thank Miguel Grinberg for his amazing Flask tutorial.
