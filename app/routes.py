@@ -80,3 +80,46 @@ def del_user():
             user_db.close_db()
             flash(str("User {0} successfully deleted!").format(username))
             return render_template("index.html", title='Home')
+
+@app.route('/change_password', methods = ['POST', 'GET'])
+def change_password():
+    if (request.method == 'POST'):
+        username = request.form['username']
+        password = request.form['password']
+        new_password = request.form['new_password']
+        user_db.open_db()
+        row = user_db.get_row("Username", username)
+
+        try:
+            if (row != None and row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True):
+                user_db.update_row("Password", sha512_crypt.hash(new_password), "Username", username)
+                user_db.close_db()
+                flash("Password changed successfully!")
+                return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
+            else:
+                user_db.close_db()
+                flash("Password change failed! The current password provided is incorrect!")
+                return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
+        except:
+            user_db.close_db()
+            flash("Password change failed! The current password provided is incorrect!")
+            return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
+
+@app.route('/change_username', methods = ['POST', 'GET'])
+def change_username():
+    if (request.method == 'POST'):
+        username = request.form['username']
+        new_username = request.form['new_username']
+        user_db.open_db()
+
+        if (user_db.get_row("Username", new_username) == None):
+            user_db.update_row("Username", new_username, "Username", username)
+            row = user_db.get_row("Username", new_username)
+            user_db.close_db()
+            flash("Username changed successfully!")
+            return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
+        else:
+            row = user_db.get_row("Username", username)
+            user_db.close_db()
+            flash("Username change failed! That username already exists!")
+            return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])

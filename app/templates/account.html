@@ -10,5 +10,23 @@
             <input type="hidden" id="username" name="username" value="{{ username }}">
             <input type="submit" value="Delete Account">
         </form>
+
+        <h2>Change Username</h2>
+        <form action="{{ url_for('change_username') }}" method="POST" accept-charset="UTF-8" autocomplete="off" autofocus="off" enctype="multipart/form-data">
+            <input type="hidden" id="username" name="username" value="{{ username }}" required/></br>
+            <label for="new_username">New Username</label>
+            <input type="text" id="new_username" name="new_username" size="32" minlength="8" maxlength="32" required/></br>
+            <input type="submit" value="Submit"/>
+        </form>
+
+        <h2>Change Password</h2>
+        <form action="{{ url_for('change_password') }}" method="POST" accept-charset="UTF-8" autocomplete="off" autofocus="off" enctype="multipart/form-data">
+            <input type="hidden" id="username" name="username" value="{{ username }}" required/></br>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" size="32" minlength="8" maxlength="32" required/></br>
+            <label for="new_password">New Password</label>
+            <input type="password" id="new_password" name="new_password" size="32" minlength="8" maxlength="32" required/></br>
+            <input type="submit" value="Submit"/>
+        </form>
     </div>
 {% endblock %}
