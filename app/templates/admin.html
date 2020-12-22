@@ -29,5 +29,22 @@
             <input type="password" id="new_password" name="new_password" size="32" minlength="8" maxlength="32" required/></br>
             <input type="submit" value="Submit"/>
         </form>
+
+        <h2>Users</h2>
+        <table>
+            <tr>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Account Type</th>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.Email }}</td>
+                    <td>{{ user.Username }}</td>
+                    <td>{{ user.Type }}</td>
+                    <td><a href="/del_user?id={{ user.Username }}">Delete Account</a></td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 {% endblock %}

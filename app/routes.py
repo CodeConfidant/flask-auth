@@ -51,10 +51,15 @@ def login_user():
         row = user_db.get_row("Username", username)
 
         try:
-            if (row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True):
+            if (row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True and row["Type"] != "Admin"):
                 user_db.close_db()
-                flash(str("Welcome {0}!").format(username))
+                flash(str("Welcome User {0}!").format(username))
                 return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
+            elif (row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True and row["Type"] == "Admin"):
+                users = user_db.get_table()
+                user_db.close_db()
+                flash(str("Welcome Admin {0}!").format(username))
+                return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
             else:
                 user_db.close_db()
                 flash("Login failed! Either the Username or Password was incorrect!")
@@ -71,15 +76,34 @@ def del_user():
         username = request.form['username']
         user_db.open_db()
         row = user_db.get_row("Username", username)
+
         if (row["Type"] == "Admin"):
+            users = user_db.get_table()
             user_db.close_db()
             flash("Error! Can't delete an Admin account!")
-            return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
+            return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
         else:
             user_db.drop_row("Username", username)
+            users = user_db.get_table()
             user_db.close_db()
             flash(str("User {0} successfully deleted!").format(username))
             return render_template("index.html", title='Home')
+    else:
+        username = request.args.get('id')
+        user_db.open_db()
+        row = user_db.get_row("Username", username)
+
+        if (row["Type"] == "Admin"):
+            users = user_db.get_table()
+            user_db.close_db()
+            flash("Error! Can't delete an Admin account!")
+            return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
+        else:
+            user_db.drop_row("Username", username)
+            users = user_db.get_table()
+            user_db.close_db()
+            flash(str("User {0} successfully deleted!").format(username))
+            return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
 
 @app.route('/change_password', methods = ['POST', 'GET'])
 def change_password():
@@ -88,14 +112,20 @@ def change_password():
         password = request.form['password']
         new_password = request.form['new_password']
         user_db.open_db()
+        users = user_db.get_table()
         row = user_db.get_row("Username", username)
 
         try:
-            if (row != None and row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True):
+            if (row != None and row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True and row["Type"] != "Admin"):
                 user_db.update_row("Password", sha512_crypt.hash(new_password), "Username", username)
                 user_db.close_db()
                 flash("Password changed successfully!")
                 return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
+            elif (row != None and row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True and row["Type"] == "Admin"):
+                user_db.update_row("Password", sha512_crypt.hash(new_password), "Username", username)
+                user_db.close_db()
+                flash("Password changed successfully!")
+                return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
             else:
                 user_db.close_db()
                 flash("Password change failed! The current password provided is incorrect!")
@@ -112,12 +142,19 @@ def change_username():
         new_username = request.form['new_username']
         user_db.open_db()
 
-        if (user_db.get_row("Username", new_username) == None):
+        if (user_db.get_row("Username", new_username) == None and user_db.get_row("Username", username)["Type"] != "Admin"):
             user_db.update_row("Username", new_username, "Username", username)
             row = user_db.get_row("Username", new_username)
             user_db.close_db()
             flash("Username changed successfully!")
             return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
+        elif (user_db.get_row("Username", new_username) == None and user_db.get_row("Username", username)["Type"] == "Admin"):
+            user_db.update_row("Username", new_username, "Username", username)
+            row = user_db.get_row("Username", new_username)
+            users = user_db.get_table()
+            user_db.close_db()
+            flash("Username changed successfully!")
+            return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
         else:
             row = user_db.get_row("Username", username)
             user_db.close_db()
