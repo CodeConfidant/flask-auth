@@ -1,6 +1,6 @@
 # flask-auth
 
-![Preview](app/static/img/preview.jpg "Application Preview")
+![Preview](../app/static/img/preview.jpg "Application Preview")
 
 ## Preparing Virtual Environment
 
