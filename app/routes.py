@@ -7,7 +7,7 @@ from app.forms import LoginForm, RegisterForm
 user_db = db("app/users.db", "Users"); user_db.close_db()
 
 @app.route('/')
-@app.route('/index', methods=['GET', 'POST'])
+@app.route('/index')
 def index():
     return render_template('index.html', title='Home')
 
@@ -128,12 +128,12 @@ def change_password():
                 return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
             else:
                 user_db.close_db()
-                flash("Password change failed! The current password provided is incorrect!")
-                return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
+                flash("Password change failed! The current password provided is incorrect! Please login with the correct password!")
+                return redirect(url_for('login'))
         except:
             user_db.close_db()
-            flash("Password change failed! The current password provided is incorrect!")
-            return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
+            flash("Password change failed! The current password provided is incorrect! Please login with the correct password!")
+            return redirect(url_for('login'))
 
 @app.route('/change_username', methods = ['POST', 'GET'])
 def change_username():
@@ -154,6 +154,12 @@ def change_username():
             users = user_db.get_table()
             user_db.close_db()
             flash("Username changed successfully!")
+            return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
+        elif (user_db.get_row("Username", new_username) != None and user_db.get_row("Username", username)["Type"] == "Admin"):
+            row = user_db.get_row("Username", username)
+            users = user_db.get_table()
+            user_db.close_db()
+            flash("Username change failed! That username already exists!")
             return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
         else:
             row = user_db.get_row("Username", username)
