@@ -88,22 +88,6 @@ def del_user():
             user_db.close_db()
             flash(str("User {0} successfully deleted!").format(username))
             return render_template("index.html", title='Home')
-    else:
-        username = request.args.get('id')
-        user_db.open_db()
-        row = user_db.get_row("Username", username)
-
-        if (row["Type"] == "Admin"):
-            users = user_db.get_table()
-            user_db.close_db()
-            flash("Error! Can't delete an Admin account!")
-            return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
-        else:
-            user_db.drop_row("Username", username)
-            users = user_db.get_table()
-            user_db.close_db()
-            flash(str("User {0} successfully deleted!").format(username))
-            return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
 
 @app.route('/change_password', methods = ['POST', 'GET'])
 def change_password():
