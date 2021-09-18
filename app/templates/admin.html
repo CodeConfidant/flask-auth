@@ -38,12 +38,14 @@
                 <th>Email</th>
                 <th>Username</th>
                 <th>Account Type</th>
+                <th>Password Last Updated</th>
             </tr>
             {% for user in users %}
                 <tr>
                     <td>{{ user.Email }}</td>
                     <td>{{ user.Username }}</td>
                     <td>{{ user.Type }}</td>
+                    <td>{{ user.LastUpdated }}</td>
                 </tr>
             {% endfor %}
         </table>
