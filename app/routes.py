@@ -1,5 +1,6 @@
 from passlib.hash import sha512_crypt
 from connectwrap import db
+from pydate import DateTime
 from flask import render_template, url_for, request, redirect, flash
 from app import app
 from app.forms import LoginForm, RegisterForm
@@ -25,23 +26,21 @@ def register_user():
         email = request.form['email']
         username = request.form['username']
         password = request.form['password']
+        account_type = "Standard"
         user_db.open_db()
 
-        try:
-            if (user_db.get_row("Email", email) == None and user_db.get_row("Username", username) == None):
-                user_db.insert_row(email, username, sha512_crypt.hash(password), "Standard")
-                user_db.close_db()
-                flash(str("Account Created! Welcome {0}!").format(username))
-                return render_template("account.html", title='Account', email=email, username=username, type="Standard")
-            else:
-                user_db.close_db()
-                flash("Account registration failed! An account with that Email and/or Username already exists!")
-                return redirect(url_for('register'))
-        except:
+        if (user_db.get_row("Email", email) == None and user_db.get_row("Username", username) == None):
+            last_updated = DateTime(1111, 1, 1, 1, 1, 1)
+            last_updated.set_UTC()
+            user_db.insert_row(email, username, sha512_crypt.hash(password + last_updated.tostring()), account_type, last_updated.tostring())
+            user_db.close_db()
+            flash(str("Account Created! Welcome {0}!").format(username))
+            return render_template("account.html", title='Account', email=email, username=username, type=account_type)
+        else:
             user_db.close_db()
             flash("Account registration failed! An account with that Email and/or Username already exists!")
             return redirect(url_for('register'))
-
+        
 @app.route('/login_user', methods=['GET', 'POST'])
 def login_user():
     if (request.method == 'POST'): 
@@ -51,11 +50,11 @@ def login_user():
         row = user_db.get_row("Username", username)
 
         try:
-            if (row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True and row["Type"] != "Admin"):
+            if (row["Username"] == username and sha512_crypt.verify(password + row["LastUpdated"], row["Password"]) == True and row["Type"] != "Admin"):
                 user_db.close_db()
                 flash(str("Welcome User {0}!").format(username))
                 return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
-            elif (row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True and row["Type"] == "Admin"):
+            elif (row["Username"] == username and sha512_crypt.verify(password + row["LastUpdated"], row["Password"]) == True and row["Type"] == "Admin"):
                 users = user_db.get_table()
                 user_db.close_db()
                 flash(str("Welcome Admin {0}!").format(username))
@@ -69,7 +68,6 @@ def login_user():
             flash("Login failed! Either the Username or Password was incorrect!")
             return redirect(url_for('login'))
             
-
 @app.route('/del_user', methods=['GET', 'POST'])
 def del_user(): 
     if (request.method == 'POST'):
@@ -84,7 +82,6 @@ def del_user():
             return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
         else:
             user_db.drop_row("Username", username)
-            users = user_db.get_table()
             user_db.close_db()
             flash(str("User {0} successfully deleted!").format(username))
             return render_template("index.html", title='Home')
@@ -95,18 +92,22 @@ def change_password():
         username = request.form['username']
         password = request.form['password']
         new_password = request.form['new_password']
+        last_updated = DateTime(1111, 1, 1, 1, 1, 1)
+        last_updated.set_UTC()
         user_db.open_db()
-        users = user_db.get_table()
         row = user_db.get_row("Username", username)
 
         try:
-            if (row != None and row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True and row["Type"] != "Admin"):
-                user_db.update_row("Password", sha512_crypt.hash(new_password), "Username", username)
+            if (row != None and row["Username"] == username and sha512_crypt.verify(password + row["LastUpdated"], row["Password"]) == True and row["Type"] != "Admin"):
+                user_db.update_row("Password", sha512_crypt.hash(new_password + last_updated.tostring()), "Username", username)
+                user_db.update_row("LastUpdated", last_updated.tostring(), "Username", username)
                 user_db.close_db()
                 flash("Password changed successfully!")
                 return render_template("account.html", title='Account', email=row["Email"], username=row["Username"], type=row["Type"])
-            elif (row != None and row["Username"] == username and sha512_crypt.verify(password, row["Password"]) == True and row["Type"] == "Admin"):
-                user_db.update_row("Password", sha512_crypt.hash(new_password), "Username", username)
+            elif (row != None and row["Username"] == username and sha512_crypt.verify(password + row["LastUpdated"], row["Password"]) == True and row["Type"] == "Admin"):
+                user_db.update_row("Password", sha512_crypt.hash(new_password + last_updated.tostring()), "Username", username)
+                user_db.update_row("LastUpdated", last_updated.tostring(), "Username", username)
+                users = user_db.get_table()
                 user_db.close_db()
                 flash("Password changed successfully!")
                 return render_template("admin.html", title='Admin Account', email=row["Email"], username=row["Username"], type=row["Type"], users=users)
