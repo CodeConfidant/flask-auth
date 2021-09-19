@@ -30,7 +30,7 @@ def register_user():
         user_db.open_db()
 
         if (user_db.get_row("Email", email) == None and user_db.get_row("Username", username) == None):
-            last_updated = DateTime(1111, 1, 1, 1, 1, 1)
+            last_updated = DateTime()
             last_updated.set_UTC()
             user_db.insert_row(email, username, sha512_crypt.hash(password + last_updated.tostring()), account_type, last_updated.tostring())
             user_db.close_db()
@@ -92,7 +92,7 @@ def change_password():
         username = request.form['username']
         password = request.form['password']
         new_password = request.form['new_password']
-        last_updated = DateTime(1111, 1, 1, 1, 1, 1)
+        last_updated = DateTime()
         last_updated.set_UTC()
         user_db.open_db()
         row = user_db.get_row("Username", username)

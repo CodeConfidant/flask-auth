@@ -5,7 +5,7 @@ from pydate import DateTime
 
 admin_email = str("master@test.com")
 admin_username = str("master123")
-last_updated = DateTime(1111, 1, 1, 1, 1, 1)
+last_updated = DateTime()
 last_updated.set_UTC()
 admin_password = sha512_crypt.hash("master123" + last_updated.tostring())
 account_type = "Admin"
