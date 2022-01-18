@@ -9,14 +9,7 @@ body {
     background-color: #14A76C;
 }
 
-header {
-    padding: 1%;
-    margin: auto;
-    display: block;
-    text-align: center;
-}
-
-h1, h2, h3, p, label {
+h1, h2, h3, p, label, li, a, th, td, button {
     color: whitesmoke;
 }
 
@@ -24,14 +17,8 @@ ol {
     list-style-type: none;
 }
 
-li {
-    color: whitesmoke;
-    padding: 5px;
-}
-
 a {
     text-decoration: none;
-    color: whitesmoke;
     padding: 2px;
     display: inline-block;
     border: transparent;
@@ -40,7 +27,7 @@ a {
     font-size: 1.2rem;   
 }
 
-input {
+input, button {
     display: block;
     background-color: whitesmoke;
     padding: 1rem;
@@ -51,29 +38,27 @@ input {
     font-size: 1rem;
 }
 
-a:hover, input:hover {
+a:hover, input:hover, button:hover {
     color: dodgerblue;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
+form, table, header, input, .col-block-1 {
+    margin: auto;
+}
+
+header, .col-block-1 {
+    width: 100%;
+    display: block;
+    text-align: center;
 }
 
 table {
-    padding: 1%;
-    opacity: 60%;
-    margin: auto;
-    width: 50%;
-    background-color: whitesmoke;
+    width: 45%;
 }
 
 th {
     border: thin solid black;
     border-radius: 2px;
-    padding: 1%;
     font-style: normal;
     font-weight: normal;
     font-size: 1.2rem;
@@ -82,28 +67,20 @@ th {
 td {
     border: thin solid black;
     border-radius: 2px;
-    padding: 1%;
     font-style: normal;
     font-weight: normal;
     font-size: 1rem;
 }
 
-.box {
-    opacity: 70%;
-    padding: 1%;
-    height: auto;
-    margin: auto;
-    display: block;
-    width: 100%;
-    border: transparent;
-    text-align: center;
+th, td, li {
+    padding: 5px;
 }
 
 .title {
     font-size: 3rem;
 }
 
-@media only screen and (max-width: 1010px) {
+@media only screen and (max-width: 601px) {
     table {
         width: 100%;
     }
