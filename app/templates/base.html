@@ -29,5 +29,25 @@
             {% endwith %}
         </header>
         {% block content %}{% endblock %}
+
+        <script>
+            toggleBlock = (elementIdName) => {
+                var element = document.getElementById(elementIdName);
+    
+                if (element.style.display === "block") {
+                    element.style.display = "none"
+                }
+                else {
+                    element.style.display = "block"
+                }
+            };
+
+            disableElementDisplay = (elementIdNames) => {
+                for (var elementIdName of elementIdNames) {
+                    var element = document.getElementById(elementIdName);
+                    element.style.display = "none";
+                }
+            };
+        </script>
     </body>
 </html>
