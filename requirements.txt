@@ -3,7 +3,7 @@ connectwrap==1.1.6
 Flask==3.0.0
 Flask-WTF==1.2.1
 itsdangerous==2.1.2
-Jinja2==3.1.2
+Jinja2==3.1.3
 MarkupSafe==2.1.1
 passlib==1.7.2
 pydate==1.1.9
